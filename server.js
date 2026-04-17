@@ -24,7 +24,15 @@ app.use(express.static("public"));
 app.get("/api/views", async (req, res) => {
   try {
     // ⛔ Tijdelijke demo-waarde (vervang dit)
-    const demoViews = Math.floor(100000 + Math.random() * 500);
+    const response = await fetch(
+      `https://graph.facebook.com/v19.0/${MEDIA_ID}?fields=video_views&access_token=${ACCESS_TOKEN}`
+    );
+    const json = await response.json();
+    
+    res.json({
+      views: json.video_views,
+      updatedAt: new Date().toISOString()
+    });
 
     res.json({
       views: demoViews,
